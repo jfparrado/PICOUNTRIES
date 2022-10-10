@@ -4,12 +4,12 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define("recipe", {
-    id_recipe: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
     },
-    name_recipe: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -21,8 +21,14 @@ module.exports = (sequelize) => {
       type: DataTypes.FLOAT,
     },
     steps: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+    },
+    dishTypes: {
+      type: DataTypes.TEXT,
     },
   });
 };
