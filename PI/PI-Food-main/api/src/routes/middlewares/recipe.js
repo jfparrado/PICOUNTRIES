@@ -6,16 +6,10 @@ const { getAllInfo, getById } = require("../controllers");
 
 router.get("/:idReceta", async (req, res) => {
   const { idReceta } = req.params;
-  console.log(idReceta);
-  const { name, summary, healthScore, steps } = req.query;
-  let atributos = [];
-  if (name) atributos.push("name");
-  if (summary) atributos.push("summary");
-  if (healthScore) atributos.push("healthScore");
-  if (steps) atributos.push("steps");
 
   try {
     const receta = await getById(idReceta);
+    console.log("la receta es:", receta);
     if (!receta) {
       return res.status(204).send("that id does not exist in the database");
     } else {
@@ -52,22 +46,22 @@ router.get("/", async (req, res) => {
   }
 });
 router.post("/", async (req, res) => {
-  const { id, name, summary, healthScore, steps, image, dishTypes, diets } =
-    req.body;
-  const cuerpo = { id, name, summary, healthScore, steps, image, dishTypes };
   try {
+    const { id, name, summary, healthScore, steps, image, dishTypes, diets } =
+      req.body;
+    const cuerpo = { id, name, summary, healthScore, steps, image, dishTypes };
     if (!name || !summary || !healthScore || !steps) {
       return res.status(404).send("Falta enviar datos obligatorios");
     }
     const dietInfo = await Diet.findAll({
-      //esto que es?
       where: { name: diets },
     });
-
+    console.log("diet indo ", dietInfo);
     const newRecipe = await Recipe.create(cuerpo);
-    console.log("bandera");
-    newRecipe.addDiets(dietInfo);
-    res.status(201).json(newRecipe); //201 es que fue creado
+    newRecipe.addDiet(dietInfo);
+    const result = await Recipe.findAll();
+    console.log(result);
+    res.status(201).json(result); //201 es que fue creado
   } catch (error) {
     res.status(401).send(error.message);
   }

@@ -63,14 +63,12 @@ const getAllInfo = async () => {
 };
 const getById = async (idReceta) => {
   try {
-    const allInfo = await getAllInfo();
-    console.log("all:", allInfo);
-    console.log("el id es:", idReceta);
+    const allInfo = await getAllInfo({
+      include: { model: Diet },
+    });
     const result = allInfo.filter(
       (receta) => parseInt(receta.id) === parseInt(idReceta)
     );
-
-    console.log("el resultado es:", result);
     return result;
   } catch (error) {
     console.log("El error es:", error);
