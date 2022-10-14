@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { Recipe, Diet } = require("../db");
+const { Recipe, Diet } = require("../../db");
 const { API_KEY } = process.env;
 
 const getInfoApi = async () => {
@@ -11,9 +11,9 @@ const getInfoApi = async () => {
     const data = infoApi.data.results;
     const infoRecipes = data?.map((recipe) => {
       let allSteps = "";
-      recipe.analyzedInstructions[0]?.steps.forEach((e) => {
+      recipe.analyzedInstructions[0]?.steps.forEach((stp) => {
         //cada receta trae un campo analizedinst que es un array que dentro contiene un solo objeto con las propiedades name y steps, steps es un array con todos los pasos . cada paso contiene un objeto con number, step, ingredients y equipment
-        allSteps += `Step ${e.number}: ${e.step}`; //aca estamos agrupando todos los pasos
+        allSteps += `Step ${stp.number}: ${stp.step}`; //aca estamos agrupando todos los pasos
       });
       return {
         //aca devuelve un obj que contiene la info de cada receta
@@ -45,7 +45,6 @@ const getInfoDB = async () => {
         // },
       },
     });
-
     return dbInfo;
   } catch (error) {
     throw new Error("El error es:", error);
@@ -67,8 +66,10 @@ const getById = async (idReceta) => {
       include: { model: Diet },
     });
     const result = allInfo.filter(
-      (receta) => parseInt(receta.id) === parseInt(idReceta)
+      (receta) => receta.id.toString() === idReceta.toString()
     );
+    console.log("info filtrada:", result);
+    console.log("el id de la receta es:", idReceta.toString());
     return result;
   } catch (error) {
     console.log("El error es:", error);

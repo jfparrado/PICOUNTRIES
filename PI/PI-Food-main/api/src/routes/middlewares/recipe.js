@@ -2,14 +2,14 @@ const axios = require("axios");
 const { Router } = require("express");
 const { Recipe, Diet } = require("../../db");
 const router = Router();
-const { getAllInfo, getById } = require("../controllers");
+const { getAllInfo, getById } = require("../controllers/recipe");
 
 router.get("/:idReceta", async (req, res) => {
   const { idReceta } = req.params;
 
   try {
     const receta = await getById(idReceta);
-    console.log("la receta es:", receta);
+    // console.log("a la ruta llego:", receta);
     if (!receta) {
       return res.status(204).send("that id does not exist in the database");
     } else {
@@ -56,7 +56,6 @@ router.post("/", async (req, res) => {
     const dietInfo = await Diet.findAll({
       where: { name: diets },
     });
-    console.log("diet indo ", dietInfo);
     const newRecipe = await Recipe.create(cuerpo);
     newRecipe.addDiet(dietInfo);
     const result = await Recipe.findAll();
