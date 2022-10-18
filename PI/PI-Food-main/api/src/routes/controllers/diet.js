@@ -33,7 +33,23 @@ const getInfoDB = async () => {
   try {
     const dbInfo = await Diet.findAll();
     const resultDiets = dbInfo.map((diet) => diet.dataValues);
-    console.log("las resultDiets es:", resultDiets);
+    if (resultDiets.length === 0) {
+      const initialDiets = [
+        { name: "Gluten Free" },
+        { name: "Ketogenic" },
+        { name: "Vegetarian" },
+        { name: "Lacto-Vegetarian" },
+        { name: "Ovo-Vegetarian" },
+        { name: "Vegan" },
+        { name: "Pescetarian" },
+        { name: "Paleo" },
+        { name: "Primal" },
+        { name: "Low FODMAP" },
+        { name: "Whole30" },
+      ];
+      await Diet.bulkCreate(initialDiets);
+      return await Diet.findAll();
+    }
     return resultDiets;
   } catch (error) {
     throw new Error("El error es:", error.message);
@@ -44,51 +60,20 @@ const getAllDiets = async () => {
     //aca la idea es traerse ambos como array. luego hacer un merge asegurando que no se repita ninguno y nimalmente pasarlo a objeto con ids unicos a cada diet
     const infoApi = await getInfoApi();
     const infoDB = await getInfoDB();
-
-    console.log("el api es:", infoApi);
-    console.log("el db es:", infoDB);
-
-    if (infoApi.length === 0 && infoDB.length === 0) {
-      const initialDiets = [
-        "Gluten Free",
-        "Ketogenic",
-        "Vegetarian",
-        "Lacto-Vegetarian",
-        "Ovo-Vegetarian",
-        "Vegan",
-        "Pescetarian",
-        "Paleo",
-        "Primal",
-        "Low FODMAP",
-        "Whole30",
-        // { id: 1, name: "Gluten Free" },
-        // { id: 2, name: "Ketogenic" },
-        // { id: 3, name: "Vegetarian" },
-        // { id: 4, name: "Lacto-Vegetarian" },
-        // { id: 5, name: "Ovo-Vegetarian" },
-        // { id: 6, name: "Vegan" },
-        // { id: 7, name: "Pescetarian" },
-        // { id: 8, name: "Paleo" },
-        // { id: 9, name: "Primal" },
-        // { id: 10, name: "Low FODMAP" },
-        // { id: 11, name: "Whole30" },
-      ];
-      await Diet.bulkCreate(initialDiets);
-      return initialDiets;
-    }
-
-    infoApi?.forEach((diet) => {
-      if (infoDB.indexOf(diet.name) !== -1) {
-        infoDB.push(diet);
-      }
+    const objetosDB = infoDB.map((diet) => diet.dataValues); // la bd se transforma obj
+    let sizeDB = infoDB.length;
+    const arrayDB = infoDB.map((diet) => diet.name.toLowerCase());
+    const dietsNotIncludedInDB = infoApi.filter(
+      //dietas unicas
+      (diet) => !arrayDB.includes(diet)
+    );
+    const unicas = dietsNotIncludedInDB.map((dieta) => {
+      //aca transformamos el array con strings a un array con objetos dentro
+      return { name: dieta };
     });
-
-    const allInfo = infoApi.map((dieta) => {
-      return { id: i++, name: dieta };
-    });
-    // console.log("el resultado final es:", result);
-
-    return allInfo;
+    await Diet.bulkCreate(unicas); //aca metemos las que aun no estan en la bd a la bd
+    const todas = await Diet.findAll(); // aca unimos las que trae la bd con aquellas que vienen del api y no estan en la bd
+    return todas;
   } catch (error) {
     console.log("El error es:", error);
   }

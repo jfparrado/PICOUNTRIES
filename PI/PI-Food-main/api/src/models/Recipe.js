@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
         type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
-        defaultValue: UUIDV1, // para que pongan los ids automaticamente
+        defaultValue: UUIDV1, // para que pongan los ids automaticamente la v1 crea los ids usando la fecha y hora de creacion
       },
       name: {
         type: DataTypes.STRING,

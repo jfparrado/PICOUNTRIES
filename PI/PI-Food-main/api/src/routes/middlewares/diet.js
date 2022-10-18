@@ -5,7 +5,7 @@ const { getInfoApi, getInfoDB, getAllDiets } = require("../controllers/diet");
 router.get("/", async (req, res) => {
   try {
     const allDiets = await getAllDiets();
-    console.log("las resultDiets es:", allDiets);
+    // console.log("las resultDiets es:", allDiets);
     res.status(200).send(allDiets);
   } catch (error) {
     res.status(400).send(error.message);
@@ -13,9 +13,9 @@ router.get("/", async (req, res) => {
 });
 router.post("/", async (req, res) => {
   try {
-    const { id, name } = req.body;
+    const { name } = req.body;
     const cuerpo = req.body;
-    if (!id || !name) {
+    if (!name) {
       return res.status(404).send("Falta enviar datos obligatorios");
     }
     const newDiet = await Diet.create(cuerpo);

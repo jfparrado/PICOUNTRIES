@@ -40,9 +40,9 @@ const getInfoDB = async () => {
         //incluye el modelo dieta y el nombre todas las dietas
         model: Diet,
         attributes: ["name"],
-        // through: {
-        //   attributes: [],
-        // },
+        through: {
+          attributes: [], //que lo traiga a travez de los atributos
+        },
       },
     });
     return dbInfo;
@@ -68,8 +68,6 @@ const getById = async (idReceta) => {
     const result = allInfo.filter(
       (receta) => receta.id.toString() === idReceta.toString()
     );
-    console.log("info filtrada:", result);
-    console.log("el id de la receta es:", idReceta.toString());
     return result;
   } catch (error) {
     console.log("El error es:", error);

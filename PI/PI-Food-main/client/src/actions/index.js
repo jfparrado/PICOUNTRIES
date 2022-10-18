@@ -1,0 +1,67 @@
+const axios = require("axios");
+export const GET_ALL_RECIPIES = "GET_ALL_RECIPIES";
+export const GET_RECIPIES_BY_NAME = "GET_RECIPIES_BY_NAME";
+export const CREATE_RECIPE = "CREATE_RECIPE";
+export const GET_ALL_DIETS = "GET_ALL_DIETS";
+export const GET_DIETS_BY_NAME = "GET_DIETS_BY_NAME";
+export const CREATE_DIET = "CREATE_DIET";
+
+export function getAllRecipes() {
+  return async function (dispatch) {
+    try {
+      return await axios
+        .get(`http://localhost:3001/recipes`) //esta es la conexion entre el front y el back
+        .then(
+          (response) =>
+            dispatch({ type: GET_ALL_RECIPIES, payload: response.data }) // response data trae toda la info de la api
+        );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+// export function getRecipesByName(name) {
+//   return async function (dispatch) {
+//     try {
+//       return await axios
+//         .get(`http://localhost:3001/recipes/${name}`) //esta es la conexion entre el front y el back
+//         .then((response) =>
+//           dispatch({ type: GET_RECIPIES_BY_NAME, payload: response.data })
+//         );
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   };
+// }
+// export function createRecipe(recipe) {
+//   return { type: CREATE_RECIPE, payload: { ...recipe, id: id++ } };
+// }
+// export function getAllDiets() {
+//   return async function (dispatch) {
+//     try {
+//       return await axios
+//         .get(`http://localhost:3001/diets`) //esta es la conexion entre el front y el back
+//         .then((response) =>
+//           dispatch({ type: GET_ALL_DIETS, payload: response.data })
+//         );
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   };
+// }
+// export function getDietsByName(name) {
+//   return async function (dispatch) {
+//     try {
+//       return await axios
+//         .get(`http://localhost:3001/diets/${name}`) //esta es la conexion entre el front y el back
+//         .then((response) =>
+//           dispatch({ type: GET_DIETS_BY_NAME, payload: response.data })
+//         );
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   };
+// }
+// export function createDiet(diet) {
+//   return { type: CREATE_PRODUCT, payload: { ...diet, id: id++ } };
+// }
