@@ -1,5 +1,5 @@
-const axios = require("axios");
-export const GET_ALL_RECIPIES = "GET_ALL_RECIPIES";
+import axios from "axios";
+export const GET_ALL_RECIPES = "GET_ALL_RECIPIES";
 export const GET_RECIPIES_BY_NAME = "GET_RECIPIES_BY_NAME";
 export const CREATE_RECIPE = "CREATE_RECIPE";
 export const GET_ALL_DIETS = "GET_ALL_DIETS";
@@ -9,12 +9,11 @@ export const CREATE_DIET = "CREATE_DIET";
 export function getAllRecipes() {
   return async function (dispatch) {
     try {
-      return await axios
-        .get(`http://localhost:3001/recipes`) //esta es la conexion entre el front y el back
-        .then(
-          (response) =>
-            dispatch({ type: GET_ALL_RECIPIES, payload: response.data }) // response data trae toda la info de la api
-        );
+      const allRecipes = await axios.get("http://localhost:3001/recipes");
+      return dispatch({
+        type: GET_ALL_RECIPES,
+        payload: allRecipes.data,
+      });
     } catch (error) {
       console.log(error);
     }

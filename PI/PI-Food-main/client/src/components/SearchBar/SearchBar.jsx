@@ -11,10 +11,8 @@ export default function SearchBar(){
     // const allRecipes = useSelector((state)=>state.recipes)
     return(
         <div>
-            <h1>esto es el search bar</h1>
-            {/* <h2>Juan`s Recipes</h2>
             <input type="text" placeholder="Recipe" id="searchbox" />
-            <button onClick={e=>{handleClick(e)}}>Search</button> */}
+            {/* <button onClick={e=>{handleClick(e)}}>Search</button> */}
         </div>
     )
 }

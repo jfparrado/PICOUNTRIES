@@ -1,6 +1,6 @@
 //aca no puede haber nada asincrono
 import {
-  GET_ALL_RECIPIES,
+  GET_ALL_RECIPES,
   // GET_RECIPIES_BY_NAME,
   // GET_DIETS_BY_NAME,
   // CREATE_DIET,
@@ -13,7 +13,7 @@ const initialState = {
 };
 export default function rootReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_ALL_RECIPIES:
+    case GET_ALL_RECIPES:
       return {
         ...state, //retorno una copia del estado
         recipes: action.payload, // modificar la propiedad recipes metiendole todos las recipes del payload

@@ -18,7 +18,7 @@ function App() {
           <LandingPage />
         </Route>
         <Route exact path={"/home"}>
-          <Home />
+          <Home info="aca va la info" />
         </Route>
         <Route path={"/home/:id"}>
           <DetailRecipe />
@@ -26,7 +26,7 @@ function App() {
         <Route path={"/create_recipes"}>
           <CreateRecipes />
         </Route>
-        <Route path="*">
+        <Route path={"*"}>
           <PageNotFound />
         </Route>
       </div>
