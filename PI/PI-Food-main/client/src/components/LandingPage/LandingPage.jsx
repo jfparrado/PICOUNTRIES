@@ -5,7 +5,7 @@ import "./LandingPage.css";
 
 export default function LandingPage(){
     return(
-        <div>
+        <div id="Landingpage">
             <h1>
             Check all our recipies
             </h1>

@@ -1,6 +1,6 @@
 import axios from "axios";
 export const GET_ALL_RECIPES = "GET_ALL_RECIPIES";
-export const GET_RECIPIES_BY_NAME = "GET_RECIPIES_BY_NAME";
+export const GET_RECIPIES_BY_ID = "GET_RECIPIES_BY_ID";
 export const CREATE_RECIPE = "CREATE_RECIPE";
 export const GET_ALL_DIETS = "GET_ALL_DIETS";
 export const GET_DIETS_BY_NAME = "GET_DIETS_BY_NAME";
@@ -19,19 +19,16 @@ export function getAllRecipes() {
     }
   };
 }
-// export function getRecipesByName(name) {
-//   return async function (dispatch) {
-//     try {
-//       return await axios
-//         .get(`http://localhost:3001/recipes/${name}`) //esta es la conexion entre el front y el back
-//         .then((response) =>
-//           dispatch({ type: GET_RECIPIES_BY_NAME, payload: response.data })
-//         );
-//     } catch (error) {
-//       console.log(error.message);
-//     }
-//   };
-// }
+export function getRecipesById(id) {
+  return async function (dispatch) {
+    try {
+      const oneRecipe = await axios.get(`http://localhost:3001/recipes/${id}`);
+      return dispatch({ type: GET_RECIPIES_BY_ID, payload: oneRecipe.data });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
 // export function createRecipe(recipe) {
 //   return { type: CREATE_RECIPE, payload: { ...recipe, id: id++ } };
 // }

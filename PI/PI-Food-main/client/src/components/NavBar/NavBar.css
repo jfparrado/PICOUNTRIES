@@ -11,6 +11,6 @@ li{
     display:inline; 
     margin-left: 4vh;  
 }
-a{
+#links >li > a{
     color: #749F82;
 }

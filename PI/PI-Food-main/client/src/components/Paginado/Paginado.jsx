@@ -1,10 +1,22 @@
 import React from "react";
-export default function Paginado(){
+import "./Paginado.css"
+
+export default function Paginado({recipesPerPage,numberOfRecipes, paginado}){
+    const pageNumbers=[];
+    for(let i=1;i<=Math.ceil(numberOfRecipes/recipesPerPage);i++)//desde i hasta la cantidad de paginas
+    {
+        pageNumbers.push(i)
+    }
     return(
-        <div>
-            <h1>
-            Esto es el paginaddo
-            </h1>
-        </div>
+        <nav>
+            <ul className="allpages">
+                {pageNumbers&&pageNumbers.map(number=>( // para cado uno de los numeros de pagina
+                <li className="pagenumber" key={number}>
+                    <a onClick={()=>paginado(number)}>{number}</a>
+                </li>
+                ))}
+            </ul>
+
+        </nav>
     )
 }

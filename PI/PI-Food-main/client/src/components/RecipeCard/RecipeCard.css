@@ -1,7 +1,15 @@
-section{
-    border-color: #A8E890;
-    border-width: 0,2vw;
-    border-style: solid;
-    border-radius: 1vw;
-    /* width: 40%; */
+.titlecard{
+    display: flex;
+    margin: 0.83rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+} 
+.imgcard{
+    border-radius: 0.2rem;
+}
+.dietas{
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
 }

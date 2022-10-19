@@ -9,28 +9,26 @@ import PageNotFound from "./components/PageNotFound/PageNotFound";
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Route path={"/"}>
+    <div className="App">
+      <Router>
+        <Route path="/">
           <NavBar />
         </Route>
-        <Route exact path={"/"}>
+        <Route exact path="/">
           <LandingPage />
         </Route>
-        <Route exact path={"/home"}>
+        <Route exact path="/home">
           <Home info="aca va la info" />
         </Route>
-        <Route path={"/home/:id"}>
+        <Route path="/home/:id">
           <DetailRecipe />
         </Route>
-        <Route path={"/create_recipes"}>
+        <Route path="/create_recipes">
           <CreateRecipes />
         </Route>
-        <Route path={"*"}>
-          <PageNotFound />
-        </Route>
-      </div>
-    </Router>
+        <Route path="*" element={<PageNotFound />} />
+      </Router>
+    </div>
   );
 }
 

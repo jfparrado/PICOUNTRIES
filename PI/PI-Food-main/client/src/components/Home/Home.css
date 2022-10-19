@@ -4,5 +4,11 @@ article{
     justify-content: space-evenly;
 }
 .card{
-    width: 40%;
+    border-color: #A8E890;
+    border-width: 0,2vw;
+    border-style: solid;
+    border-radius: 1rem;
+    margin: 2rem 3rem;
+    width: 40vw;
+    height: 63vh;
 }

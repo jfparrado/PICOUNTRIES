@@ -1,0 +1,19 @@
+.allpages{
+    display: flex;
+    background-color: #A8E890;
+    justify-self: center;
+    width: max-content;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+}
+.pagenumber{
+    display: flex;
+    justify-items: center;
+margin: auto 1rem;
+}
+nav{
+    display: flex;
+    justify-content: center;
+}
