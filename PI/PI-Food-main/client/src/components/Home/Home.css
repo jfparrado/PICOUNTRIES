@@ -4,8 +4,9 @@ article{
     justify-content: space-evenly;
 }
 .card{
+    padding-bottom: 0.5rem;
     border-color: #A8E890;
-    border-width: 0,2vw;
+    border-width: 0.2vw;
     border-style: solid;
     border-radius: 1rem;
     margin: 2rem 3rem;

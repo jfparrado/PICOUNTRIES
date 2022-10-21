@@ -11,7 +11,7 @@ export default function RecipeCard({id, name, image, diets}){
                 {name} 
                 </Link>
             </h2>
-            <p className="dietas">{diets}</p>
+            <p className="dietas"> <b>Diets:</b> {diets.join(', ')}</p>
             <img src={image} alt="imagen" className="imgcard"/>
         </section>
     )

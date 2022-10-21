@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
     let todasRecetas = await getAllInfo();
 
     if (name) {
-      let recetasFiltradas = info.filter(
+      let recetasFiltradas = todasRecetas.filter(
         (
           receta //cada receta
         ) => receta.name.toLowerCase().includes(name.toLowerCase()) //va a buscar si es un su campo nombre(en minuscula) se encuentra la palabra del query (tambien en minuscula)
@@ -47,6 +47,7 @@ router.get("/", async (req, res) => {
 });
 router.post("/", async (req, res) => {
   try {
+    console.log("estamos en api");
     const { id, name, summary, healthScore, steps, image, dishTypes, diets } =
       req.body;
     const cuerpo = { id, name, summary, healthScore, steps, image, dishTypes };

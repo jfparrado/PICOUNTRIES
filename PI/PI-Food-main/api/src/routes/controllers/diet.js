@@ -35,17 +35,17 @@ const getInfoDB = async () => {
     const resultDiets = dbInfo.map((diet) => diet.dataValues);
     if (resultDiets.length === 0) {
       const initialDiets = [
-        { name: "Gluten Free" },
-        { name: "Ketogenic" },
+        { name: "gluten free" },
+        { name: "ketogenic" },
         { name: "Vegetarian" },
         { name: "Lacto-Vegetarian" },
         { name: "Ovo-Vegetarian" },
-        { name: "Vegan" },
-        { name: "Pescetarian" },
-        { name: "Paleo" },
-        { name: "Primal" },
+        { name: "vegan" },
+        { name: "pescatarian" },
+        { name: "paleolithic" },
+        { name: "primal" },
         { name: "Low FODMAP" },
-        { name: "Whole30" },
+        { name: "whole 30" },
       ];
       await Diet.bulkCreate(initialDiets);
       return await Diet.findAll();
@@ -62,7 +62,7 @@ const getAllDiets = async () => {
     const infoDB = await getInfoDB();
     const objetosDB = infoDB.map((diet) => diet.dataValues); // la bd se transforma obj
     let sizeDB = infoDB.length;
-    const arrayDB = infoDB.map((diet) => diet.name.toLowerCase());
+    const arrayDB = infoDB.map((diet) => diet.name);
     const dietsNotIncludedInDB = infoApi.filter(
       //dietas unicas
       (diet) => !arrayDB.includes(diet)
