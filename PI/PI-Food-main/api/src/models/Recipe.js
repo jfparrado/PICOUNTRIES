@@ -31,7 +31,7 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },
       dishTypes: {
-        type: DataTypes.TEXT,
+        type: DataTypes.ARRAY(DataTypes.STRING), //asi se usan los arrays. especificando que va dentro del array
       },
     },
     {
