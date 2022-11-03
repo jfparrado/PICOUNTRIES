@@ -1,0 +1,26 @@
+
+.titlecard{
+    padding: 0.5rem;
+    display: flex;
+    margin: 0.83rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+}
+.title{
+    color: #A8E890;
+} 
+.imgcard{
+    border-radius: 0.2rem;
+    width: 80%;
+    height: 80%;
+}
+.dietas{
+    display: flex;
+    width: 80%;
+    height:fit-content;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
