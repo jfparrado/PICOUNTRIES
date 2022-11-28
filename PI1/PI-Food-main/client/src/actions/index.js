@@ -79,6 +79,18 @@ export function postRecipe(recipe) {
     }
   };
 }
+
+export function postUser(user) {
+  return async function (dispatch) {
+    try {
+      const userCreated = await axios.post(`http://localhost:3001/users`, user);
+      return userCreated;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function getAllDiets() {
   return async function (dispatch) {
     try {

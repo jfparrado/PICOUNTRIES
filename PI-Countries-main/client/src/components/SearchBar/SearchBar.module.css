@@ -1,0 +1,22 @@
+.container{
+    display: flex;
+    width: 30%;
+    margin-right: 0.5rem;
+    justify-content: flex-end;
+}
+.searchbox{
+    border-width: 0.1rem;
+    border-style: solid;
+    border-color:hsl(218, 12%, 18%); ;
+    border-radius: 0.3rem;
+}
+.searchButton{
+    background-color: hsl(218, 12%, 18%);
+    color: white;
+    border: 1px solid rgb(184, 184, 184);
+    border-radius: 0.3rem;
+}
+.searchButton:hover {
+    color: rgb(194, 194, 194);
+    cursor: pointer;
+}

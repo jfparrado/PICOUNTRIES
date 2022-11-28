@@ -1,0 +1,38 @@
+header{
+    background-color: #425f57b6;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+.links{
+    display: flex;
+    padding: 0%;
+    width: 33%;
+}
+li{
+    margin-left: 10%;
+    list-style-type: none;
+}
+.text{
+    text-decoration: none;
+    color: white;
+    position: relative;
+}
+.title{
+    text-decoration: none;
+    color: white;
+
+}
+.text:hover {
+    color: rgb(194, 194, 194);
+    text-shadow: 2px 3px black;
+    top: -2px;
+    transition: all 0.5s ;
+  }
+.sticky {
+    z-index:0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }

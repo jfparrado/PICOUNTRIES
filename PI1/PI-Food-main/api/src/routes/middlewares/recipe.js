@@ -4,7 +4,15 @@ const { Recipe, Diet } = require("../../db");
 const router = Router();
 const { getAllInfo, getById } = require("../controllers/recipe");
 
-router.get("/:idReceta", async (req, res) => {
+const redirectLogin = (req, res, next) => {
+  if (!req.session.userId) {
+    res.redirect("/login");
+  } else {
+    next();
+  }
+};
+
+router.get("/:idReceta", redirectLogin, async (req, res) => {
   const { idReceta } = req.params;
 
   try {

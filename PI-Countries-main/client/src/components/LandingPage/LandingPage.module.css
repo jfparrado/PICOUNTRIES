@@ -1,0 +1,39 @@
+.Landingpage{
+    background-image: url("https://parade.com/.image/t_share/MTkwNTgxNDY5Mzk3NTkxMTY1/planet-earth-from-the-space-at-night.jpg");
+    /* background-color: rgba(255, 0, 0, 0.445); */
+    width: 100vw;
+    height: 90vh;
+    position: absolute;
+    top: 0px;
+    z-index:-1;
+    padding-top: 60px;
+    display: flex;
+    align-items: center;
+}
+.circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: hsl(218, 12%, 18%);
+    border-color: white;
+    position: fixed;
+    left: 48%;
+    right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.text {
+    color: white;
+    text-decoration: none;
+    position: relative;
+}
+.text:hover {
+    color: rgb(194, 194, 194);
+    text-shadow: 2px 3px black;
+    top: -2px;
+    transition: all 0.5s;
+  }
+.title{
+    color: white;
+}
