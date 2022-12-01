@@ -35,6 +35,12 @@ const empty = [
 ];
 
 export default function rootReducer(state = initialState, action) {
+  const allCountries = state.allCountries;
+  const filterActivity = state.filterActivity;
+  const filterContinent = state.filterContinent;
+  const orders = state.orders;
+  const newAction = { payload: orders };
+  let countriesByFilter = [];
   function orderArrays(action) {
     switch (action.payload) {
       case "asc":
@@ -86,6 +92,30 @@ export default function rootReducer(state = initialState, action) {
         break;
     }
   }
+  function filtrar() {
+    if (filterActivity === "All" && filterContinent === "All") {
+      countriesByFilter = allCountries;
+    } else if (filterActivity === "All" && filterContinent !== "All") {
+      countriesByFilter = allCountries.filter(
+        (country) => country.region === filterContinent
+      );
+    } else if (filterActivity !== "All" && filterContinent === "All") {
+      countriesByFilter = allCountries.filter((country) =>
+        country.activities.find(({ name }) => name === filterActivity)
+      );
+    } else if (filterActivity !== "All" && filterContinent !== "All") {
+      countriesByFilter = allCountries.filter((country) =>
+        country.activities.find(({ name }) => name === filterActivity)
+      );
+      countriesByFilter = countriesByFilter.filter(
+        (country) => country.region === filterContinent
+      );
+    }
+    if (orders !== "All") {
+      orderArrays(newAction);
+    }
+    if (countriesByFilter.length === 0) countriesByFilter = empty;
+  }
   switch (action.type) {
     case GET_ALL_COUNTRIES:
       return {
@@ -107,79 +137,18 @@ export default function rootReducer(state = initialState, action) {
       };
 
     case GET_COUNTRIES_BY_ACTIVITY:
-      const allCountries = state.allCountries;
-      const filteredCountries = state.countries;
+      filtrar();
 
-      // if (filterActivity === "All" && filterContinent === "All") {
-      //   countriesByContinent = allCountries2;
-      // } else if (filterActivity === "All" && filterContinent !== "All") {
-      //   countriesByContinent = allCountries2.filter(
-      //     (country) => country.region === action.payload
-      //   );
-      // } else if (filterActivity !== "All" && filterContinent === "All") {
-      //   countriesByContinent = allCountries2.filter((country) =>
-      //     country.activities.find(({ name }) => name === filterActivity)
-      //   );
-      // } else if (filterActivity !== "All" && filterContinent !== "All") {
-      //   countriesByContinent = allCountries2.filter((country) =>
-      //     country.activities.find(({ name }) => name === filterActivity)
-      //   );
-      //   countriesByContinent = countriesByContinent.filter(
-      //     (country) => country.region === action.payload
-      //   );
-      // }
-
-      let countriesByActivity =
-        action.payload === "All" //si se ecogen todas
-          ? allCountries //traetelas todas
-          : filteredCountries.filter(
-              (
-                country //sino solo lo que se escoja
-              ) =>
-                country.activities.find(({ name }) => name === action.payload)
-            );
-
-      if (countriesByActivity.length === 0) countriesByActivity = empty;
       return {
         ...state,
-        countries: countriesByActivity,
+        countries: countriesByFilter,
       };
 
     case GET_COUNTRIES_BY_CONTINENT:
-      const allCountries2 = state.allCountries;
-      const filterActivity = state.filterActivity;
-      const filterContinent = state.filterContinent;
-      const orders = state.orders;
-      const newAction = { payload: orders };
-      console.log("new action:", newAction);
-      let countriesByContinent = [];
-      if (filterActivity === "All" && filterContinent === "All") {
-        countriesByContinent = allCountries2;
-      } else if (filterActivity === "All" && filterContinent !== "All") {
-        countriesByContinent = allCountries2.filter(
-          (country) => country.region === action.payload
-        );
-      } else if (filterActivity !== "All" && filterContinent === "All") {
-        countriesByContinent = allCountries2.filter((country) =>
-          country.activities.find(({ name }) => name === filterActivity)
-        );
-      } else if (filterActivity !== "All" && filterContinent !== "All") {
-        countriesByContinent = allCountries2.filter((country) =>
-          country.activities.find(({ name }) => name === filterActivity)
-        );
-        countriesByContinent = countriesByContinent.filter(
-          (country) => country.region === action.payload
-        );
-      }
-      if (orders !== "All") {
-        orderArrays(newAction);
-      }
-      if (countriesByContinent.length === 0) countriesByContinent = empty;
-      console.log("countires by continent:", countriesByContinent);
-
+      filtrar();
       return {
         ...state,
-        countries: countriesByContinent,
+        countries: countriesByFilter,
       };
 
     case COUNTRIES_ORDER_BY_NAME:
