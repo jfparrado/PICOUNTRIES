@@ -3,7 +3,7 @@ import{ useState, useEffect }from "react";
 import {useDispatch, useSelector} from "react-redux"; //esto permite conectarse con la DB
 //el use slector es el map state to props
 //el  use dispatch permite hacer ddispatch directamente
-import { getAllCountries, updateFilter, updateOrder, getAllActivities, getCountriesByActivity, getCountriesOrderedByName} from "../../actions";
+import { getAllCountries, updateFilterActivity, updateFilterContinent, updateOrder, getAllActivities, getCountriesByActivity, getCountriesByContinent, getCountriesOrderedByName} from "../../actions";
 import Paginado from "../Paginado/Paginado"
 import CountryCard from "../CountryCard/CountryCard"
 import style from "./Home.module.css"
@@ -12,11 +12,12 @@ import style from "./Home.module.css"
 export default function Home(){//props recibe la info que le llegue y se usa props.info
     let pais=0;
     let actividad=0;
-    const continents=["Africa", "Americas", "Asia", "Europe", "Oceania"]
+    const continents=["Africa", "Americas", "Antarctic","Asia", "Europe", "Oceania"]
     const dispatch =useDispatch()
     const allCountries =  useSelector((state)=>state?.countries)
     const allActivities = useSelector((state)=>state?.activities)
-    const allFilters = useSelector((state)=>state?.filters)
+    const filterActivity = useSelector((state)=>state?.filterActivity)
+    const filterContinent = useSelector((state)=>state?.filterContinent)
     const allOrders = useSelector((state)=>state?.orders)
     useEffect(()=>{
         if(allCountries.length===0){
@@ -45,8 +46,13 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
     }
 
     function handleFilter(event){
-        dispatch(updateFilter(event.target.value))
-        dispatch(getCountriesByActivity(event.target.value))
+        if(event.target.name==="filterActivity"){
+            dispatch(updateFilterActivity(event.target.value))
+            dispatch(getCountriesByActivity(event.target.value))
+        }else{
+            dispatch(updateFilterContinent(event.target.value))
+            dispatch(getCountriesByContinent(event.target.value))
+        }
     }
     function handleOrderer(event){
         event.preventDefault();
@@ -59,10 +65,14 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
     function clearFilters(event) {
         event.preventDefault();
         dispatch(updateOrder("All"))
-        dispatch(updateFilter("All"))
+        dispatch(updateFilterActivity("All"))
+        dispatch(updateFilterContinent("All"))
         
         dispatch(getCountriesByActivity("All"))
+        // dispatch(getCountriesByContinent("All"))
         dispatch(getCountriesOrderedByName("All"))//aca ordena las countries
+
+
         setCurrentPage(1)//aca me lleva la pag 1 luego de haber ordenado
     }
     return(
@@ -82,7 +92,7 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
                             <option value="popu">Population</option>
                         </select>
                         <label htmlFor="filterActivity" className={style.text}>Filer By: </label>
-                        <select name="filterActivity" defaultValue={allFilters} value={allFilters} onChange={(event)=>handleFilter(event)}>
+                        <select name="filterActivity" defaultValue={filterActivity} value={filterActivity} onChange={(event)=>handleFilter(event)}>
                             <option value="All">Activity</option>
                             {arrActivities?.map((activity)=>{ //que muestre unicamente las countries dentro de esta pagina
                                 return (
@@ -90,7 +100,7 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
                                     )})
                             }
                         </select>
-                        <select name="filterContinent" defaultValue={allFilters} value={allFilters} onChange={(event)=>handleFilter(event)}>
+                        <select name="filterContinent" defaultValue={filterContinent} value={filterContinent} onChange={(event)=>handleFilter(event)}>
                             <option value="All">Continent</option>
                             {continents?.map((continent)=>{ //que muestre unicamente las countries dentro de esta pagina
                                 return (

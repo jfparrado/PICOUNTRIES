@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
         //continentes
         type: DataTypes.STRING,
         allowNull: false,
-        isIn: [["Africa", "Americas", "Asia", "Europe", "Oceania"]],
+        isIn: [["Africa", "Americas", "Antartic", "Asia", "Europe", "Oceania"]],
       },
       capital: {
         type: DataTypes.ARRAY(DataTypes.STRING),

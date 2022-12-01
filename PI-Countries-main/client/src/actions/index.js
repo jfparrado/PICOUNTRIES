@@ -3,6 +3,7 @@ import axios from "axios";
 export const GET_ALL_COUNTRIES = "GET_ALL_COUNTRIES";
 export const GET_COUNTRIES_BY_ID = "GET_COUNTRIES_BY_ID";
 export const GET_COUNTRIES_BY_ACTIVITY = "GET_COUNTRIES_BY_ACTIVITY";
+export const GET_COUNTRIES_BY_CONTINENT = "GET_COUNTRIES_BY_CONTINENT";
 export const GET_COUNTRIES_BY_NAME = "GET_COUNTRIES_BY_NAME";
 
 export const GET_ALL_ACTIVITIES = "GET_ALL_ACTIVITIES";
@@ -115,6 +116,12 @@ export function getCountriesByActivity(activityName) {
     payload: activityName,
   };
 }
+export function getCountriesByContinent(continentName) {
+  return {
+    type: GET_COUNTRIES_BY_CONTINENT,
+    payload: continentName,
+  };
+}
 export function getCountriesOrderedByName(payload) {
   return {
     type: COUNTRIES_ORDER_BY_NAME,
@@ -168,18 +175,16 @@ export function getActivitiesByName(name) {
     }
   };
 }
-// export function getAllFilter() {
-//   return async function (dispatch) {
-//     try {
-//       return dispatch({ type: GET_ALL_FILTERS, payload:  });
-//     } catch (error) {
-//       console.log(error.message);
-//     }
-//   };
-// }
-export function updateFilter(filter) {
+
+export function updateFilterActivity(filter) {
   return async function (dispatch) {
     return dispatch({ type: UPDATE_FILTER_ACTIVITY, payload: filter });
+  };
+}
+
+export function updateFilterContinent(filter) {
+  return async function (dispatch) {
+    return dispatch({ type: UPDATE_FILTER_CONTINENT, payload: filter });
   };
 }
 export function updateOrder(order) {
