@@ -1,0 +1,52 @@
+.mainContainer{
+    display: flex;
+    width: 100%;
+    padding-top: 60px;
+    justify-content: center;
+    margin: 10% 0%;
+}
+.containerImg{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+.flag{
+    width: 100%;
+}
+.title,.content{
+    color: white;
+}
+.content{
+    margin-left: 10%;
+    text-align: left;
+    width: 60%;
+}
+.containerContent{
+    margin: 0% 5%;
+    border-width: 0,2rem;
+    border-style: solid;
+    border-radius: 1rem;
+    border-color: antiquewhite;
+    background-color: rgba(52, 62, 92, 0.459);
+}
+.info{
+    display: flex;
+}
+.left{
+    width: 30%;
+    margin-left: 10%;
+    align-self: center;
+}
+.right{
+    width: 70%;
+}
+.loading{
+    width: 7%;
+    height: 15%;
+    position: fixed;
+    left: auto;
+    right: auto;
+    top: 250px;
+}

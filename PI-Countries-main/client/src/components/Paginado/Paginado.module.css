@@ -1,0 +1,27 @@
+.numpage{
+    width: auto;
+    color: white;
+}
+.allpages{
+    display: flex;
+    background-color: #0b0288;
+    justify-self: center;
+    width: max-content;
+    padding: 0%;
+    border-radius: 1rem;
+}
+.pagenumber{
+    display: flex;
+    justify-items: center;
+    margin: 0%;
+    padding: 0.2rem 0.5rem;
+    width: 100%;
+}
+.pagenumber:hover{
+    cursor: pointer;
+    background-color: #060052;
+}
+nav{
+    display: flex;
+    justify-content: center;
+}

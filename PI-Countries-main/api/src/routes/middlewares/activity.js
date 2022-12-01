@@ -5,13 +5,23 @@ const { getInfoDB, postActivity } = require("../controllers/activity");
 
 router.post("/", async (req, res) => {
   try {
-    const { country, name, difficulty, duration, season } = req.body;
-    const bodyInfo = { name, difficulty, duration, season };
-    if (!name || !difficulty || !duration || !season) {
+    const { countries, name, difficulty, duration, seasons } = req.body;
+    const bodyInfo = { name, difficulty, duration, seasons };
+    if (!name || !difficulty || !duration || !seasons) {
       return res.status(404).send("Falta enviar datos obligatorios");
     }
-    const result = await postActivity(bodyInfo, country);
-    res.status(201).json(result.dataValues); //201 es que fue creado
+    const existingActivity = await Activity.findOne({ where: { name: name } });
+    if (existingActivity) {
+      return res
+        .status(406)
+        .send("La actividad ya existe y no puede repetirse");
+    }
+    let results = await postActivity(bodyInfo, countries);
+    // console.log("result es:", result[0].dataValues);
+    results = results.map((result) => {
+      return result.dataValues;
+    });
+    res.status(201).json(results); //201 es que fue creado
   } catch (error) {
     console.log("El error middleware activity post / es:", error.message);
     res
@@ -22,7 +32,6 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    console.log("hola");
     const result = await getInfoDB();
     res.status(201).json(result); //201 es que fue creado
   } catch (error) {

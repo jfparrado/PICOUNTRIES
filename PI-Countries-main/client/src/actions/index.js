@@ -9,9 +9,11 @@ export const GET_ALL_ACTIVITIES = "GET_ALL_ACTIVITIES";
 export const GET_ACTIVITIES_BY_NAME = "GET_ACTIVITIES_BY_NAME";
 export const POST_ACTIVITIES = "POST_ACTIVITIES";
 export const COUNTRIES_ORDER_BY_NAME = "COUNTRIES_ORDER_BY_NAME";
-export const UPDATE_FILTER = "UPDATE_FILTER";
+export const UPDATE_FILTER_ACTIVITY = "UPDATE_FILTER_ACTIVITY";
+export const UPDATE_FILTER_CONTINENT = "UPDATE_FILTER_CONTINENT";
 export const UPDATE_ORDER = "UPDATE_ORDER";
 export const GET_ALL_FILTERS = "GET_ALL_FILTERS";
+export const RESET_FILTERS = "RESET_FILTERS";
 
 export function getAllCountries() {
   return async function (dispatch) {
@@ -28,6 +30,14 @@ export function getAllCountries() {
         error.message
       );
     }
+  };
+}
+export function resetFilters() {
+  return async function (dispatch) {
+    return dispatch({
+      type: RESET_FILTERS,
+      payload: "All",
+    });
   };
 }
 export function getCountriesById(id) {
@@ -53,15 +63,40 @@ export function getCountriesById(id) {
   };
 }
 export function getCountriesByName(countryName) {
+  const empty = [
+    {
+      cca3: "404",
+      name: "No country found",
+      flags:
+        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Missing_flag.png",
+      region: "No region found",
+      capital: ["No capital found"],
+      subregion: "No subregion found",
+      area: "No area found",
+      population: "No population found",
+      activities: [
+        {
+          name: "No activity",
+        },
+      ],
+    },
+  ];
   return async function (dispatch) {
     try {
       const countriesSameName = await axios.get(
         `http://localhost:3001/countries?name=${countryName}`
       );
-      return dispatch({
-        type: GET_COUNTRIES_BY_NAME,
-        payload: countriesSameName.data,
-      });
+      if (countriesSameName.status !== 204) {
+        return dispatch({
+          type: GET_COUNTRIES_BY_NAME,
+          payload: countriesSameName.data,
+        });
+      } else {
+        return dispatch({
+          type: GET_COUNTRIES_BY_NAME,
+          payload: empty,
+        });
+      }
     } catch (error) {
       console.log(
         "El error client actions getCountriesByName es:",
@@ -74,13 +109,13 @@ export function getCountriesByName(countryName) {
     }
   };
 }
-export function getCountriesByActivity(dietName) {
+export function getCountriesByActivity(activityName) {
   return {
     type: GET_COUNTRIES_BY_ACTIVITY,
-    payload: dietName,
+    payload: activityName,
   };
 }
-export function getCountriesOrderedByActivity(payload) {
+export function getCountriesOrderedByName(payload) {
   return {
     type: COUNTRIES_ORDER_BY_NAME,
     payload,
@@ -144,7 +179,7 @@ export function getActivitiesByName(name) {
 // }
 export function updateFilter(filter) {
   return async function (dispatch) {
-    return dispatch({ type: UPDATE_FILTER, payload: filter });
+    return dispatch({ type: UPDATE_FILTER_ACTIVITY, payload: filter });
   };
 }
 export function updateOrder(order) {

@@ -3,24 +3,27 @@ article{
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
+.contPag{
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0% 15%;
+}
+.pagNum{
+    color: white;
+    margin: 0%;
+}
 .card{
     padding-bottom: 0.5rem;
     border-color: #A8E890;
     border-width: 0.2vw;
     border-style: solid;
     border-radius: 1rem;
-    margin: 2rem 3rem;
-    width: 40vw;
+    margin: 2rem 0rem;
+    width: 25vw;
     height: fit-content;
     background-color: rgba(98, 112, 102, 0.411);
 }
-.containerImg{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-}
+
 .mainContainer{
     display: flex;
     width: 100%;
@@ -28,8 +31,18 @@ article{
     padding-top: 60px;
     justify-content: center;
 }
+.parentElement{
+    width: 100%;
+}
+.text{
+color : white
+}
 .loading{
     width: 7%;
     height: 15%;
+    position: fixed;
+    left: auto;
+    right: auto;
+    top: 40%;
 }
 a:link { text-decoration: none; }

@@ -1,37 +1,53 @@
 import React from "react";
 import{ useState, useEffect }from "react";
 import {useHistory} from "react-router-dom"
-import { postRecipe, getAllDiets} from "../../actions";
+import { postActivities, getAllActivities, getAllCountries} from "../../actions";
 import {useDispatch, useSelector} from "react-redux";
-import style from "./CreateRecipes.module.css";
+import style from "./CreateActivity.module.css";
 
-export default function CreateRecipe(){
+export default function CreateActivity(){
     const dispatch=useDispatch();
     const history=useHistory();
-    const allDishes = ['breakfast', 'brunch', 'dinner', 'lunch', 'main course', 'main dish', 'morning meal', 'salad', 'side dish', 'soup']
-
-    const diets=useSelector((state)=>state.diets)
+    const allSeasons = ["Autumn", "Spring", "Summer", "Winter"]
+    const allCountriesData =  useSelector((state)=>state?.allCountries)
+    const allActivities = useSelector((state)=>state?.activities)
+    allCountriesData.sort((countryA, countryB) => {
+        const nameA = countryA.name.toUpperCase(); // ignore upper and lowercase
+        const nameB = countryB.name.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+        // names must be equal
+      });
+      const allCountries=allCountriesData?.map((country)=>{
+        return country.name;
+      })
+    // const allActivities = useSelector((state)=>state?.activities)
     const [errors,setErrors]=useState({
         name:`Se requiere name`,
-        summary:"Se requiere summary ",
-        healthScore:"Se requiere healthScore",
-        steps:"Se requiere steps",
-        image:"Se requiere image",
-        dishTypes:"",
-        diets:"",
+        difficulty:"Se requiere difficulty ",
+        duration:"Se requiere duration",
+        season:"Se requiere season",
     }) //aca se crean los posibles errores
     const [input,setInput]=useState({
         name:"",
-        summary:"",
-        healthScore:null,
-        steps:"",
-        image:"",
-        dishTypes:[],
-        diets:[]
+        difficulty:"",
+        duration:"",
+        seasons:[],
+        countries:[]
     })
     useEffect(()=>{
-        dispatch(getAllDiets())
-    },[dispatch])
+        if(allCountries.length===0){
+        dispatch(getAllCountries()) 
+        }
+        if(allActivities.length===0){
+            dispatch(getAllActivities())
+        }
+    },[dispatch,allActivities.length, allCountries.length])
 
     function validate(input){ //aca entra todo el estado input
         let errors={}
@@ -74,86 +90,81 @@ export default function CreateRecipe(){
     function handleSubmit(event){
         event.preventDefault();
         try {
-            dispatch(postRecipe(input))
-        alert("recipe created")
+            dispatch(postActivities(input))
+        alert("Activity created")
         setInput({
             name:"",
-            summary:"",
-            healthScore:0,
-            steps:"",
-            image:"",
-            dishTypes:"",
-            diets:[]
+            difficulty:"",
+            duration:"",
+            season:"",
+            countries:[]
         })
         history.push("/home") //asi es como se rediriges
         } catch (error) {
             console.log("el error es:", error)
+            alert("The activity could not be created")
         }
         
     }
+    let resultado=allActivities.filter((activity)=>activity.name===input.name)
+    console.log("all activities:", allActivities);
+    console.log("input name:", input.name);
+    console.log("el resultado es:", resultado);
     return(
         <form className={style.mainContainer} onSubmit={(event)=>handleSubmit(event)}>
-            <h3>Create a new recipe</h3>
+            <h3 className={style.title}>Create a new activity</h3>
             <div className={style.container}>
                 <label htmlFor="name" className={style.titleInput}>Name<span>*</span>: </label>
-                <input className={style.input} type='text' maxlength="60" placeholder="Pepito Perez" name='name' id="name"  value={input.name} onChange={(event)=>handleChange(event)} required/>
+                <input className={style.input} type='text' maxLength="60" placeholder="Sky" name='name' id="name"  value={input.name} onChange={(event)=>handleChange(event)} required/>
                 {errors.name&&(
                 <p className={style.errors}>{errors.name}</p>
                 )}
-            </div>
-
-            <div className={style.container}>
-                <label htmlFor="summary" className={style.titleInput}>Summary<span>*</span>: </label>
-                <input className={style.input} type='text' maxlength="1800"  placeholder="A salad with tomatos" name='summary' id="summary" value={input.summary} onChange={(event)=>handleChange(event)} required/>
-                {errors.summary&&(
-                <p className={style.errors}>{errors.summary}</p>
+                {resultado.length!==0&&(
+                <p className={style.errors}>la actividad ya existe</p>
                 )}
             </div>
 
             <div className={style.container}>
-                <label htmlFor="healthScore" className={style.titleInput}>Health score<span>*</span>: </label>
-                <input className={style.input} type='number' maxlength="3" name='healthScore' placeholder="1"id="healthScore" min="0" max="100" value={input.healthScore} onChange={(event)=>handleChange(event)} required/>
-                {errors.healthScore&&(
-                <p className={style.errors}>{errors.healthScore}</p>
+                <label htmlFor="difficulty" className={style.titleInput}>Difficulty<span>*</span>: </label>
+                <input className={style.input} type='number' maxLength="3" name='difficulty' placeholder="1"id="difficulty" min="0" max="100" value={input.difficulty} onChange={(event)=>handleChange(event)} required/>
+                {errors.difficulty&&(
+                <p className={style.errors}>{errors.difficulty}</p>
                 )}
             </div>
 
             <div className={style.container}>
-                <label htmlFor="steps" className={style.titleInput}>Step by step<span>*</span>: </label>
-                <input className={style.input} type='text' name='steps' maxlength="1600"  placeholder="Step 1: Put the" id="steps" value={input.steps} onChange={(event)=>handleChange(event)} required/>
-                {errors.steps&&(
-                <p className={style.errors}>{errors.steps}</p>
+                <label htmlFor="duration" className={style.titleInput}>Duration(minutes)<span>*</span>: </label>
+                <input className={style.input} type='number' maxLength="3" name='duration' placeholder="1"id="duration" min="0" max="14400" value={input.duration} onChange={(event)=>handleChange(event)} required/>
+                {errors.duration&&(
+                <p className={style.errors}>{errors.duration}</p>
                 )}
             </div>
 
-            <div className={style.container}>
-                <label htmlFor="image" className={style.titleInput}>Image<span>*</span>: </label>
-                <input className={style.input} placeholder="https://example.com/example.jpg" pattern="https://.*" name='image' id="image" value={input.image} onChange={(event)=>handleChange(event)} required/>
-                {errors.image&&(
-                <p className={style.errors}>{errors.image}</p>
-                )}
-            </div>
-
-            <div className={style.title}> <h4 >Dishes</h4> </div>
+            <div className={style.title}> <h4 >Seasons</h4> </div>
             <div className={style.arrays}>
-                {allDishes?.map((dish)=>(
-                <label className={style.inputArray}><input type="checkbox" name="dishTypes" value={dish} onChange={(event)=>handleCheck(event)} />{dish}</label>
-                ))}
-                
+                {allSeasons?.map((season)=>{
+                    return (
+                    <div className={style.contCountries}>
+                        <input type="checkbox" name="seasons" value={season} onChange={(event)=>handleCheck(event)} />
+                        <label className={style.inputArray}>{season}</label>
+                    </div>)
+                    })}
             </div>
 
-            <div className={style.title}> <h4>Diets</h4> </div>
+            <div className={style.title}> <h4 >Countries</h4> </div>
             <div className={style.arrays}>
-                {diets?.map((diet)=>(
-                    <label className={style.inputArray}><input type="checkbox" name="diets" value={diet.name} onChange={(event)=>handleCheck(event)} />{diet.name}</label>
+                {allCountries?.map((country)=>(
+                    <div className={style.contCountries}>
+                        <input type="checkbox" name="countries" value={country} onChange={(event)=>handleCheck(event)} />
+                        <label className={style.inputArray}>{country}</label>
+                    </div>
                 ))}
-                
             </div>
 
             <div>
-                {Object.keys(errors).length!==0 ? 
-                <button type="submit" disabled >Add recipe</button>:
-                <button type="submit" >Add recipe</button>
+                {Object.keys(errors).length!==0 ||resultado.length!==0? 
+                <button type="submit" disabled >Create Activity</button>:
+                <button type="submit" >Create Activity</button>
                 }
             </div>
         </form>

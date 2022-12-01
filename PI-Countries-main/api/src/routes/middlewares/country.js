@@ -25,14 +25,20 @@ router.get("/:idCountry", async (req, res) => {
 router.get("/", async (req, res) => {
   const empty = [
     {
+      cca3: "404",
       name: "No country found",
       flags:
         "https://upload.wikimedia.org/wikipedia/commons/2/2f/Missing_flag.png",
-      region: "No country found",
-      capital: "No capital found",
+      region: "No region found",
+      capital: ["No capital found"],
       subregion: "No subregion found",
       area: "No area found",
       population: "No population found",
+      activities: [
+        {
+          name: "No activity",
+        },
+      ],
     },
   ];
   try {
@@ -47,6 +53,8 @@ router.get("/", async (req, res) => {
         return res.status(200).send(filterCountries);
       } else {
         filterCountries = empty;
+        console.log("llegue aca!!!!!");
+        console.log("empty:", filterCountries);
         return res.status(204).send(filterCountries);
       }
     } else {

@@ -3,9 +3,11 @@ import {
   GET_ALL_COUNTRIES,
   GET_COUNTRIES_BY_ID,
   GET_COUNTRIES_BY_NAME,
+  GET_COUNTRIES_BY_ACTIVITY,
+  COUNTRIES_ORDER_BY_NAME,
   POST_ACTIVITIES,
   GET_ALL_ACTIVITIES,
-  UPDATE_FILTER,
+  UPDATE_FILTER_ACTIVITY,
   UPDATE_ORDER,
 } from "../actions";
 const initialState = {
@@ -13,7 +15,8 @@ const initialState = {
   countries: [],
   countryDetail: [],
   activities: [],
-  filters: "All",
+  filterActivity: "All",
+  filterContinent: "All",
   orders: "All",
 };
 const empty = [
@@ -49,6 +52,79 @@ export default function rootReducer(state = initialState, action) {
         countries: action.payload,
       };
 
+    case GET_COUNTRIES_BY_ACTIVITY:
+      const allCountries = state.allCountries;
+      const filteredCountries = state.countries;
+      let countriesByActivity =
+        action.payload === "All" //si se ecogen todas
+          ? allCountries //traetelas todas
+          : filteredCountries.filter(
+              (
+                country //sino solo lo que se escoja
+              ) =>
+                country.activities.find(({ name }) => name === action.payload)
+            );
+      if (countriesByActivity.length === 0) countriesByActivity = empty;
+      return {
+        ...state,
+        countries: countriesByActivity,
+      };
+
+    case COUNTRIES_ORDER_BY_NAME:
+      switch (action.payload) {
+        case "asc":
+          state.countries.sort((countryA, countryB) => {
+            const nameA = countryA.name.toUpperCase(); // ignore upper and lowercase
+            const nameB = countryB.name.toUpperCase(); // ignore upper and lowercase
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+            return 0;
+            // names must be equal
+          });
+
+          break;
+
+        case "desc":
+          state.countries.sort((countryA, countryB) => {
+            const nameA = countryA.name.toUpperCase(); // ignore upper and lowercase
+            const nameB = countryB.name.toUpperCase(); // ignore upper and lowercase
+            if (nameA > nameB) {
+              return -1;
+            }
+            if (nameA < nameB) {
+              return 1;
+            }
+            return 0;
+            // names must be equal
+          });
+          break;
+
+        case "popu":
+          state.countries.sort((countryA, countryB) => {
+            const populationA = countryA.population;
+            const populationB = countryB.population;
+            if (populationA > populationB) {
+              return -1;
+            }
+            if (populationA < populationB) {
+              return 1;
+            }
+            return 0;
+            // names must be equal
+          });
+          break;
+        default:
+          break;
+      }
+      return {
+        ...state,
+        orders: action.payload,
+      };
+
     case POST_ACTIVITIES:
       return {
         ...state,
@@ -60,10 +136,10 @@ export default function rootReducer(state = initialState, action) {
         activities: action.payload,
       };
 
-    case UPDATE_FILTER:
+    case UPDATE_FILTER_ACTIVITY:
       return {
         ...state,
-        filters: action.payload,
+        filterActivity: action.payload,
       };
 
     case UPDATE_ORDER:

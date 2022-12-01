@@ -14,14 +14,14 @@ const getInfoDB = async () => {
     );
   }
 };
-const postActivity = async (bodyInfo, country) => {
-  const countryInfo = await Country.findOne({
-    where: { name: country },
+const postActivity = async (bodyInfo, countries) => {
+  const countryInfo = await Country.findAll({
+    where: { name: countries }, //busca todos los countries
   });
   const activity = await Activity.create(bodyInfo);
-  await countryInfo.addActivity(activity);
-  const result = await Country.findOne({
-    where: { name: country },
+  await activity.addCountry(countryInfo);
+  const result = await Country.findAll({
+    where: { name: countries },
     include: {
       model: Activity,
       attributes: ["name"],

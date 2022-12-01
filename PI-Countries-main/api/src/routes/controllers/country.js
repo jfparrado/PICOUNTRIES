@@ -23,7 +23,7 @@ const getAllInfo = async () => {
           name: country.name.official,
           flags: country.flags[0], // esto es pa que quito los []
           region: country.region,
-          capital: country.capital,
+          capital: country.capital ? country.capital : ["No capital"],
           subregion: country.subregion,
           area: country.area,
           population: country.population,

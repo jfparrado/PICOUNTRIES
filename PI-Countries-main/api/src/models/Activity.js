@@ -9,6 +9,7 @@ module.exports = (sequelize) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        primaryKey: true,
       },
       difficulty: {
         //url de la bandera
@@ -23,8 +24,8 @@ module.exports = (sequelize) => {
         //continentes
         type: DataTypes.INTEGER,
       },
-      season: {
-        type: DataTypes.STRING,
+      seasons: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
         isIn: [["Autumn", "Spring", "Summer", "Winter"]],
       },
     },
