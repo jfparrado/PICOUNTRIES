@@ -1,6 +1,10 @@
 const { Router } = require("express");
 const router = Router();
-const { getAllInfo, getById } = require("../controllers/country.js");
+const {
+  getAllInfo,
+  getById,
+  deleteCountryById,
+} = require("../controllers/country.js");
 
 router.get("/:idCountry", async (req, res) => {
   const { idCountry } = req.params;
@@ -19,6 +23,20 @@ router.get("/:idCountry", async (req, res) => {
     res
       .status(401)
       .send("El error middleware country get /:idCountry es:", error.message);
+  }
+});
+
+router.delete("/:idCountry", async (req, res) => {
+  const { idCountry } = req.params;
+  try {
+    await deleteCountryById(idCountry);
+    let allCountries = await getAllInfo();
+    return res.status(200).send(allCountries);
+  } catch (error) {
+    console.log("El error middleware country delete / es:", error.message);
+    res
+      .status(error.number)
+      .send("El error middleware country delete / es:", error.message);
   }
 });
 
@@ -53,8 +71,6 @@ router.get("/", async (req, res) => {
         return res.status(200).send(filterCountries);
       } else {
         filterCountries = empty;
-        console.log("llegue aca!!!!!");
-        console.log("empty:", filterCountries);
         return res.status(204).send(filterCountries);
       }
     } else {

@@ -41,3 +41,14 @@
     margin-right: auto;
     color: white;
 }
+.buttons{
+    margin-top: 1rem;
+    background-color: hsl(218, 12%, 18%);
+    color: white;
+    border: 1px solid rgb(184, 184, 184);
+    border-radius: 0.3rem;
+}
+.buttons:hover {
+    color: rgb(194, 194, 194);
+    cursor: pointer;
+}

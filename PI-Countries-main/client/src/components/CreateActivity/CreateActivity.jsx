@@ -91,14 +91,16 @@ export default function CreateActivity(){
         event.preventDefault();
         try {
             dispatch(postActivities(input))
-        alert("Activity created")
-        setInput({
-            name:"",
-            difficulty:"",
-            duration:"",
-            season:"",
-            countries:[]
-        })
+            alert("Activity created")
+            setInput({
+                name:"",
+                difficulty:"",
+                duration:"",
+                season:"",
+                countries:[]
+            })
+            dispatch(getAllCountries()) 
+            dispatch(getAllActivities())
         history.push("/home") //asi es como se rediriges
         } catch (error) {
             console.log("el error es:", error)
@@ -107,9 +109,6 @@ export default function CreateActivity(){
         
     }
     let resultado=allActivities.filter((activity)=>activity.name===input.name)
-    console.log("all activities:", allActivities);
-    console.log("input name:", input.name);
-    console.log("el resultado es:", resultado);
     return(
         <form className={style.mainContainer} onSubmit={(event)=>handleSubmit(event)}>
             <h3 className={style.title}>Create a new activity</h3>
@@ -163,8 +162,8 @@ export default function CreateActivity(){
 
             <div>
                 {Object.keys(errors).length!==0 ||resultado.length!==0? 
-                <button type="submit" disabled >Create Activity</button>:
-                <button type="submit" >Create Activity</button>
+                <button className={style.buttonDissabled} type="submit" disabled >Create Activity</button>:
+                <button className={style.buttons} type="submit" >Create Activity</button>
                 }
             </div>
         </form>

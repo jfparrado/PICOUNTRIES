@@ -80,5 +80,21 @@ const getById = async (idCountry) => {
     throw new Error("El error controller recipe getById es:", error.message);
   }
 };
-
-module.exports = { getAllInfo, getById };
+const deleteCountryById = async (idCountry) => {
+  try {
+    const countryInfo = await Country.findOne({
+      where: { cca3: idCountry },
+    });
+    await countryInfo.destroy();
+  } catch (error) {
+    console.log(
+      "El error controller country deleteCountryById es:",
+      error.message
+    );
+    throw new Error(
+      "El error controller recipe deleteCountryById es:",
+      error.message
+    );
+  }
+};
+module.exports = { getAllInfo, getById, deleteCountryById };

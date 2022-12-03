@@ -2,6 +2,7 @@
 import {
   GET_ALL_COUNTRIES,
   GET_COUNTRIES_BY_ID,
+  DELETE_COUNTRY_BY_ID,
   GET_COUNTRIES_BY_NAME,
   GET_COUNTRIES_BY_ACTIVITY,
   GET_COUNTRIES_BY_CONTINENT,
@@ -129,7 +130,11 @@ export default function rootReducer(state = initialState, action) {
         ...state,
         countryDetail: action.payload,
       };
-
+    case DELETE_COUNTRY_BY_ID:
+      return {
+        ...state,
+        allCountries: action.payload,
+      };
     case GET_COUNTRIES_BY_NAME:
       return {
         ...state,

@@ -2,10 +2,10 @@
 import axios from "axios";
 export const GET_ALL_COUNTRIES = "GET_ALL_COUNTRIES";
 export const GET_COUNTRIES_BY_ID = "GET_COUNTRIES_BY_ID";
+export const DELETE_COUNTRY_BY_ID = "DELETE_COUNTRY_BY_ID";
 export const GET_COUNTRIES_BY_ACTIVITY = "GET_COUNTRIES_BY_ACTIVITY";
 export const GET_COUNTRIES_BY_CONTINENT = "GET_COUNTRIES_BY_CONTINENT";
 export const GET_COUNTRIES_BY_NAME = "GET_COUNTRIES_BY_NAME";
-
 export const GET_ALL_ACTIVITIES = "GET_ALL_ACTIVITIES";
 export const GET_ACTIVITIES_BY_NAME = "GET_ACTIVITIES_BY_NAME";
 export const POST_ACTIVITIES = "POST_ACTIVITIES";
@@ -58,6 +58,28 @@ export function getCountriesById(id) {
       );
       throw new Error(
         "El error client actions getCountriesById es:",
+        error.message
+      );
+    }
+  };
+}
+export function deleteCountryById(id) {
+  return async function (dispatch) {
+    try {
+      const updatedCountries = await axios.delete(
+        `http://localhost:3001/countries/${id}`
+      );
+      return dispatch({
+        type: DELETE_COUNTRY_BY_ID,
+        payload: updatedCountries,
+      });
+    } catch (error) {
+      console.log(
+        "El error client actions deleteCountryById es:",
+        error.message
+      );
+      throw new Error(
+        "El error client actions deleteCountryById es:",
         error.message
       );
     }

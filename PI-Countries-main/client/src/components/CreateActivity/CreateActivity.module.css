@@ -53,3 +53,23 @@
 span{
     color:red;
 }
+.buttons{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: hsl(218, 12%, 18%);
+    color: white;
+    border: 1px solid rgb(184, 184, 184);
+    border-radius: 0.3rem;
+}
+.buttonDissabled{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: hsla(208, 10%, 72%, 0.596);
+    color: white;
+    border: 1px solid rgb(184, 184, 184);
+    border-radius: 0.3rem;
+}
+.buttons:hover {
+    color: rgb(194, 194, 194);
+    cursor: pointer;
+}

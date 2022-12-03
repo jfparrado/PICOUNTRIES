@@ -21,23 +21,28 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
     const allOrders = useSelector((state)=>state?.orders)
     useEffect(()=>{
         if(allCountries.length===0){
-        dispatch(getAllCountries()) 
+            dispatch(getAllCountries()) 
         }
         if(allActivities.length===0){
             dispatch(getAllActivities())
         }
     },[dispatch,allActivities.length, allCountries.length])
-    const [currentPage, setCurrentPage]=useState(1) 
+    const [currentPage, setCurrentPage]=useState(0) 
     // const [order,setOrder]=useState("")
-    const countriesPerPage=9;
-    const indexLastCountry=currentPage*countriesPerPage;
-    const indexFirstCountry=indexLastCountry-countriesPerPage;
+    let isFirstPage=true;
+    let countriesPerPage=0;
+    isFirstPage=currentPage===0?true:false
+    countriesPerPage=isFirstPage===true?9:10;
+    let indexLastCountry=0;
+    let indexFirstCountry=0;
+    indexLastCountry=isFirstPage===true?9:(currentPage*10)+9;
+    indexFirstCountry=isFirstPage===true?0:indexLastCountry-10;
     const currentCountries=allCountries.slice(indexFirstCountry,indexLastCountry)
     const loadingImg="https://zonavalue.com/wp-content/themes/kauplus/img/loading.gif";
     let arrActivities=allActivities?.map((activity)=>{
         return(activity.name)
     })
-    arrActivities.sort((a, b) => b.localeCompare(a, 'es', {sensitivity: 'base'})) //organiza alpabeticamente en reversa
+    arrActivities.sort((a, b) => b.localeCompare(a, 'es', {sensitivity: 'base'})) //organiza alfabeticamente en reversa
     //toco asi porque hay mayusculas y minusculas
     arrActivities.reverse()//aca enderezamos
 
@@ -53,13 +58,14 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
             dispatch(updateFilterContinent(event.target.value))
             dispatch(getCountriesByContinent(event.target.value))
         }
+        setCurrentPage(0)
     }
     function handleOrderer(event){
         event.preventDefault();
         dispatch(updateOrder(event.target.value))
         if(event.target.value!=="All"){
             dispatch(getCountriesOrderedByName(event.target.value))//aca ordena las countries
-            setCurrentPage(1)//aca me lleva la pag 1 luego de haber ordenado
+            setCurrentPage(0)//aca me lleva la pag 1 luego de haber ordenado
         }
     }
     function clearFilters(event) {
@@ -67,13 +73,10 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
         dispatch(updateOrder("All"))
         dispatch(updateFilterActivity("All"))
         dispatch(updateFilterContinent("All"))
-        
         dispatch(getCountriesByActivity("All"))
         // dispatch(getCountriesByContinent("All"))
         dispatch(getCountriesOrderedByName("All"))//aca ordena las countries
-
-
-        setCurrentPage(1)//aca me lleva la pag 1 luego de haber ordenado
+        setCurrentPage(0)//aca me lleva la pag 1 luego de haber ordenado
     }
     return(
         <div className={style.mainContainer}>
@@ -81,9 +84,9 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
             {
                 allCountries.length>0?
                 <div className={style.parentElement}>
-                    <Paginado countriesPerPage={countriesPerPage} numberOfCountries={allCountries.length} paginado={funcPaginado}/>
+                    <Paginado numberOfCountries={allCountries.length} paginado={funcPaginado}/>
                     <div className={style.contPag}>
-                        <p className={style.pagNum}>Page {currentPage}</p>
+                        <p className={style.pagNum}>Page {currentPage + 1}</p>
                         <label htmlFor="order" className={style.text}>Order By: </label>
                         <select name="order" defaultValue={allOrders} value={allOrders} onChange={(event)=>handleOrderer(event)}>
                             <option value="All">None</option>
@@ -108,7 +111,7 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
                                     )})
                             }
                         </select>
-                        <button onClick={(event)=>clearFilters(event)}>Clear Filters</button>
+                        <button className={style.buttons} onClick={(event)=>clearFilters(event)}>Clear Filters</button>
                     </div>
                     <article className={style.tarjetas}>
                     {currentCountries?.map((country)=>{ //que muestre unicamente las countries dentro de esta pagina
