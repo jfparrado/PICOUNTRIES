@@ -12,10 +12,12 @@ import {
   UPDATE_FILTER_ACTIVITY,
   UPDATE_FILTER_CONTINENT,
   UPDATE_ORDER,
+  GET_ALL_COUNTRIES_AND_ACTIVITIES,
 } from "../actions";
 const initialState = {
   allCountries: [], //esto es para que al filtrar no se hagan filtros sobre los filtros. siempre sobre todos los paises
   countries: [],
+  countriesAndActivities: [],
   countryDetail: [],
   activities: [],
   filterActivity: "All",
@@ -193,6 +195,11 @@ export default function rootReducer(state = initialState, action) {
         orders: action.payload,
       };
 
+    case GET_ALL_COUNTRIES_AND_ACTIVITIES:
+      return {
+        ...state,
+        countriesAndActivities: action.payload,
+      };
     default:
       return { ...state };
   }

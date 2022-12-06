@@ -15,6 +15,8 @@ export const UPDATE_FILTER_CONTINENT = "UPDATE_FILTER_CONTINENT";
 export const UPDATE_ORDER = "UPDATE_ORDER";
 export const GET_ALL_FILTERS = "GET_ALL_FILTERS";
 export const RESET_FILTERS = "RESET_FILTERS";
+export const GET_ALL_COUNTRIES_AND_ACTIVITIES =
+  "GET_ALL_COUNTRIES_AND_ACTIVITIES";
 
 export function getAllCountries() {
   return async function (dispatch) {
@@ -212,5 +214,27 @@ export function updateFilterContinent(filter) {
 export function updateOrder(order) {
   return async function (dispatch) {
     return dispatch({ type: UPDATE_ORDER, payload: order });
+  };
+}
+export function getAllCountriesAndActivities() {
+  return async function (dispatch) {
+    try {
+      const allCountriesAndActivities = await axios.get(
+        "http://localhost:3001/countriesactivities"
+      );
+      return dispatch({
+        type: GET_ALL_COUNTRIES_AND_ACTIVITIES,
+        payload: allCountriesAndActivities.data,
+      });
+    } catch (error) {
+      console.log(
+        "El error client actions getAllCountriesAndActivities es:",
+        error.message
+      );
+      throw new Error(
+        "El error client actions getAllCountriesAndActivities es:",
+        error.message
+      );
+    }
   };
 }

@@ -7,7 +7,6 @@ import {useDispatch} from "react-redux";
 export default function CountryCard({id, name, image, region}){
     const dispatch =useDispatch()
     function deleteCountry(event,id){
-        console.log("el id es: ",id);
         event.preventDefault();
         dispatch(deleteCountryById(id))
         alert("the country was deleted succesfully")

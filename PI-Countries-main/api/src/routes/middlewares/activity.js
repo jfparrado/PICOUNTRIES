@@ -1,7 +1,11 @@
 const { Router } = require("express");
-const { Country, Activity } = require("../../db");
+const { Country, Activity, Country_Activity } = require("../../db");
 const router = Router();
-const { getInfoDB, postActivity } = require("../controllers/activity");
+const {
+  getInfoDB,
+  postActivity,
+  repeatedActivities,
+} = require("../controllers/activity");
 
 router.post("/", async (req, res) => {
   try {
@@ -10,17 +14,14 @@ router.post("/", async (req, res) => {
     if (!name || !difficulty || !duration || !seasons) {
       return res.status(404).send("Falta enviar datos obligatorios");
     }
-    const existingActivity = await Activity.findOne({ where: { name: name } });
-    if (existingActivity) {
+    const strIds = await repeatedActivities(countries, name);
+    if (strIds) {
       return res
         .status(406)
-        .send("La actividad ya existe y no puede repetirse");
+        .send(`La actividad ya esta relacionada con los ids ${strIds}`);
     }
     let results = await postActivity(bodyInfo, countries);
-    // console.log("result es:", result[0].dataValues);
-    results = results.map((result) => {
-      return result.dataValues;
-    });
+
     res.status(201).json(results); //201 es que fue creado
   } catch (error) {
     console.log("El error middleware activity post / es:", error.message);
