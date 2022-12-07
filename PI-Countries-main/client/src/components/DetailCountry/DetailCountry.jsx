@@ -2,7 +2,7 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getCountriesById} from "../../actions/index"
 import { useEffect }from "react";
-import { useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 import style from "./DetailCountry.module.css"
 
 export default function  DetailCountry(){
@@ -12,17 +12,12 @@ export default function  DetailCountry(){
         dispatch(getCountriesById(id)) 
     },[dispatch,id])
     const oneCountry =  useSelector((state)=>state?.countryDetail)
-    // if(typeof(id)!=="string"){
-    //     id=id.toString();
-    // }
+
     const loadingImg="https://zonavalue.com/wp-content/themes/kauplus/img/loading.gif";
-    // const variable=oneCountry[0].id;
-    // console.log("el id recibido es:", typeof id)
-    // console.log("oneCountry[0].id es:", typeof oneCountry)
+
     return(
         <div className={style.mainContainer}>
-            {oneCountry.length>0 && oneCountry[0].cca3===id? //esto es pa que cuando no haya nada se muestre un loading
-            // && oneCountry[0].id.toString()===id
+            {oneCountry.length>0 && oneCountry[0].cca3===id? //esto es pa que cuando no haya nada se muestre un 
             <div className={style.containerContent}>
                 <h3 className={style.title}>{oneCountry[0].name}</h3>
                 <div className={style.info}>
@@ -50,7 +45,10 @@ export default function  DetailCountry(){
                         <p className={style.content}><b>Touristic activities: </b> 
                             {
                                 oneCountry[0].activities.length!==0?
-                                oneCountry[0].activities.map((activity)=>activity.name+(" ")):
+                                oneCountry[0].activities.map((activity)=>{
+                                    return(
+                                        <p> {activity.name} <button><Link className={style.text} to={`/edit_activity/${activity.name}`}>Edit</Link></button> </p>
+                                        )}):
                                 "No activities"
                             }</p>
                         </div>

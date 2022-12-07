@@ -17,6 +17,7 @@ export const GET_ALL_FILTERS = "GET_ALL_FILTERS";
 export const RESET_FILTERS = "RESET_FILTERS";
 export const GET_ALL_COUNTRIES_AND_ACTIVITIES =
   "GET_ALL_COUNTRIES_AND_ACTIVITIES";
+export const PUT_ACTIVITY = "PUT_ACTIVITY";
 
 export function getAllCountries() {
   return async function (dispatch) {
@@ -160,6 +161,25 @@ export function postActivities(activity) {
         activity
       );
       return activityCreated;
+    } catch (error) {
+      console.log("El error client actions postActivities es:", error.message);
+      throw new Error(
+        "El error client actions postActivities es:",
+        error.message
+      );
+    }
+  };
+}
+export function putActivities(activity) {
+  console.log("front put activities:", activity);
+  const { name } = activity;
+  return async function (dispatch) {
+    try {
+      const updatedActivity = await axios.put(
+        `http://localhost:3001/activities/${name}`,
+        activity
+      );
+      return updatedActivity;
     } catch (error) {
       console.log("El error client actions postActivities es:", error.message);
       throw new Error(

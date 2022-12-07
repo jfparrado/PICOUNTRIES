@@ -11,7 +11,8 @@ import style from "./Home.module.css"
 
 export default function Home(){//props recibe la info que le llegue y se usa props.info
     let pais=0;
-    let actividad=0;
+    let continentNumber=252;
+    let actividad=260;
     const continents=["Africa", "Americas", "Antarctic","Asia", "Europe", "Oceania"]
     const dispatch =useDispatch()
     const allCountries =  useSelector((state)=>state?.countries)
@@ -88,26 +89,26 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
                     <div className={style.contPag}>
                         <p className={style.pagNum}>Page {currentPage + 1}</p>
                         <label htmlFor="order" className={style.text}>Order By: </label>
-                        <select name="order" defaultValue={allOrders} value={allOrders} onChange={(event)=>handleOrderer(event)}>
+                        <select name="order" value={allOrders} onChange={(event)=>handleOrderer(event)}>
                             <option value="All">None</option>
                             <option value="asc">Ascendent</option>
                             <option value="desc">Descendent</option>
                             <option value="popu">Population</option>
                         </select>
                         <label htmlFor="filterActivity" className={style.text}>Filer By: </label>
-                        <select name="filterActivity" defaultValue={filterActivity} value={filterActivity} onChange={(event)=>handleFilter(event)}>
+                        <select name="filterActivity"  value={filterActivity} onChange={(event)=>handleFilter(event)}>
                             <option value="All">Activity</option>
                             {arrActivities?.map((activity)=>{ //que muestre unicamente las countries dentro de esta pagina
                                 return (
-                                    <option key={`a${actividad++}`} value={activity}>{activity}</option>
+                                    <option key={actividad++} value={activity}>{activity}</option>
                                     )})
                             }
                         </select>
-                        <select name="filterContinent" defaultValue={filterContinent} value={filterContinent} onChange={(event)=>handleFilter(event)}>
+                        <select name="filterContinent"  value={filterContinent} onChange={(event)=>handleFilter(event)}>
                             <option value="All">Continent</option>
                             {continents?.map((continent)=>{ //que muestre unicamente las countries dentro de esta pagina
                                 return (
-                                    <option key={`c${continent++}`} value={continent}>{continent}</option>
+                                    <option key={continentNumber++} value={continent}>{continent}</option>
                                     )})
                             }
                         </select>
@@ -116,7 +117,7 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
                     <article className={style.tarjetas}>
                     {currentCountries?.map((country)=>{ //que muestre unicamente las countries dentro de esta pagina
                         return (
-                            <div key={`p${pais++}`} className={style.card}>
+                            <div key={pais++} className={style.card}>
                                 <CountryCard
                                 key={country.id}
                                 id={country.cca3}

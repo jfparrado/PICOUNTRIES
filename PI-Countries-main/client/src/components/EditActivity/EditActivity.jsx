@@ -1,59 +1,37 @@
 import React from "react";
 import{ useState, useEffect }from "react";
 import {useHistory} from "react-router-dom"
-import { postActivities, getAllActivities, getAllCountries, getAllCountriesAndActivities} from "../../actions";
+import { putActivities, getAllActivities, getAllCountries} from "../../actions";
+import { useParams } from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
-import style from "./CreateActivity.module.css";
+import style from "./EditActivity.module.css";
 
-export default function CreateActivity(){
+export default function EditActivity(){
+    const loadingImg="https://zonavalue.com/wp-content/themes/kauplus/img/loading.gif";
+    const { id } = useParams();
     const dispatch=useDispatch();
     const history=useHistory();
     const allSeasons = ["Autumn", "Spring", "Summer", "Winter"]
-    const allCountriesData =  useSelector((state)=>state?.allCountries)
     const allActivities = useSelector((state)=>state?.activities)
-    const allCountriesAndActivities = useSelector((state)=>state?.countriesAndActivities)
-    let keyCountries=0;
-    let keyActivities=260;
-    allCountriesData.sort((countryA, countryB) => {
-        const nameA = countryA.name.toUpperCase(); // ignore upper and lowercase
-        const nameB = countryB.name.toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        return 0;
-        // names must be equal
-      });
-      const allCountries=allCountriesData?.map((country)=>{
-        return country.name;
-      })
-    // const allActivities = useSelector((state)=>state?.activities)
+    let keyActivities=0;
+    let activityToEdit= allActivities.filter((activity)=>activity.name===id)
+
     const [errors,setErrors]=useState({
-        name:`Name is required`,
         difficulty:"Difficulty is required",
         duration:"Duration is required",
         season:"Season is required",
     }) //aca se crean los posibles errores
     const [input,setInput]=useState({
-        name:"",
+        name:id,
         difficulty:"",
         duration:"",
         seasons:[],
-        countries:[]
     })
     useEffect(()=>{
-        if(allCountries.length===0){
-        dispatch(getAllCountries()) 
-        }
-        if(allCountriesAndActivities.length===0){
-        dispatch(getAllCountriesAndActivities()) 
-        }
         if(allActivities.length===0){
             dispatch(getAllActivities())
         }
-    },[dispatch,allActivities.length, allCountries.length, allCountriesAndActivities.length])
+    },[dispatch,allActivities.length])
 
     function validate(input){ //aca entra todo el estado input
         let errors={}
@@ -96,54 +74,39 @@ export default function CreateActivity(){
     function handleSubmit(event){
         event.preventDefault();
         try {
-            if(coincidencia.length!==0){
-                alert(`The countries ${coincidencia.join(", ")} are already associated with this activity`)
-            }else if(input.difficulty<1 ||input.difficulty>5 ){
+            if(input.difficulty<1 ||input.difficulty>5 ){
                     alert(`The difficulty must be a number between 1 and 5`)
             }else if(input.duration<1 ){
                 alert(`The duration must be a positive number`)
             }else{
-                dispatch(postActivities(input))
-                alert("Activity created")
+                dispatch(putActivities(input))
+                alert("Activity updated")
                 setInput({
-                    name:"",
                     difficulty:"",
                     duration:"",
                     season:"",
-                    countries:[]
                 })
                 dispatch(getAllCountries()) 
                 dispatch(getAllActivities())
                 history.push("/home") //asi es como se rediriges
             }
         } catch (error) {
-            console.log("el error es:", error)
-            alert("The activity could not be created")
+            console.log("el error es:", error.message)
+            alert("The activity could not be updated")
         }
         
     }
 
-    let idsCountriesInput=allCountriesData.filter((country)=>input.countries.includes(country.name)).map((country)=>country.cca3)//trae los ids de los paises del input
-    let paisesDentroDeActividades= allCountriesAndActivities.filter((linea)=>(linea.activityName===input.name)).map((country)=>country.countryCca3)
-    let coincidencia=[]
-    if (paisesDentroDeActividades) {
-        coincidencia=idsCountriesInput.filter((id)=>paisesDentroDeActividades.includes(id))
-    }
-    
     return(
         <form className={style.mainContainer} onSubmit={(event)=>handleSubmit(event)}>
-            <h3 className={style.title}>Create a new activity</h3>
-            <div className={style.container}>
-                <label htmlFor="name" className={style.titleInput}>Name<span>*</span>: </label>
-                <input className={style.input} type='text' maxLength="60" placeholder="Sky" name='name' id="name"  value={input.name} onChange={(event)=>handleChange(event)} required/>
-                {errors.name&&(
-                <b> <p className={style.errors}>{errors.name}</p></b>
-                )}
-            </div>
+            {allActivities.length>0?
+            <div>
+
+            <h3 className={style.title}>Edit activity {activityToEdit[0].name} </h3>
 
             <div className={style.container}>
                 <label htmlFor="difficulty" className={style.titleInput}>Difficulty<span>*</span>: </label>
-                <input className={style.input} type='number' maxLength="3" name='difficulty' placeholder="1-5"id="difficulty" min="1" max="5" value={input.difficulty} onChange={(event)=>handleChange(event)} required/>
+                <input className={style.input} type='number' maxLength="3" name='difficulty' placeholder="1-5"id="difficulty" min="1" max="5"  value={input.difficulty} onChange={(event)=>handleChange(event)} required/>
                 {errors.difficulty&&(
                 <b><p className={style.errors}>{errors.difficulty}</p></b>
                 )}
@@ -174,25 +137,17 @@ export default function CreateActivity(){
                     })}
             </div>
 
-            <div className={style.title}> <h4 >Countries</h4> </div>
-            <div className={style.arrays}>
-                {allCountries?.map((country)=>(
-                    <div key={`${keyCountries++}`} className={style.contCountries}>
-                        <input type="checkbox" name="countries" value={country} onChange={(event)=>handleCheck(event)} />
-                        <label className={style.inputArray}>{country}</label>
-                    </div>
-                ))}
-                 {coincidencia.length!==0&&(
-                <b> <p className={style.errors}>The activity is already associated with {coincidencia.join(",")}, please deselect it</p></b>
-                )}
-            </div>
-
             <div>
-                {Object.keys(errors).length!==0 ||coincidencia.length!==0 ||(input.difficulty<0||input.difficulty>5) ||input.duration<1? 
-                <button className={style.buttonDissabled} type="submit" disabled >Create Activity</button>:
-                <button className={style.buttons} type="submit" >Create Activity</button>
+                {Object.keys(errors).length!==0 ||(input.difficulty<0||input.difficulty>5) ||input.duration<1? 
+                <button className={style.buttonDissabled} type="submit" disabled >Edit Activity</button>:
+                <button className={style.buttons} type="submit" >Edit Activity</button>
                 }
             </div>
+            </div>
+            :<div className={style.containerImg}>
+            <img src={loadingImg} alt="loading" className={style.loading}/>
+        </div> 
+            }
         </form>
     )
 }

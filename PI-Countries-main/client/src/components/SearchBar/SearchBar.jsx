@@ -24,7 +24,7 @@ export default function SearchBar(){
     
     return(
         <div className={style.container}>
-            <input type="text" placeholder="Country" className={style.searchbox} value={name} on onChange={(event)=>handleInputChange(event)} />
+            <input type="text" placeholder="Country" className={style.searchbox} value={name} onChange={(event)=>handleInputChange(event)} />
             <button type="submit" className={style.searchButton} onClick={(event)=>{handleClick(event)}}>Search</button>
         </div>
     )

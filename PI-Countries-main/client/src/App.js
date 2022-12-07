@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar/NavBar";
 import LandingPage from "./components/LandingPage/LandingPage";
 import Home from "./components/Home/Home";
 import CreateActivity from "./components/CreateActivity/CreateActivity";
+import EditActivity from "./components/EditActivity/EditActivity";
 import DetailCountry from "./components/DetailCountry/DetailCountry";
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
         </Route>
         <Route path="/create_activities">
           <CreateActivity />
+        </Route>
+        <Route path="/edit_activity/:id">
+          <EditActivity />
         </Route>
       </Router>
     </div>
