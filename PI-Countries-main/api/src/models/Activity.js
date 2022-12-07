@@ -16,13 +16,15 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-          max: 5, // only allow values <= 23
+          max: 5,
           min: 1,
         },
       },
       duration: {
-        //continentes
         type: DataTypes.INTEGER,
+        validate: {
+          min: 1,
+        },
       },
       seasons: {
         type: DataTypes.ARRAY(DataTypes.STRING),

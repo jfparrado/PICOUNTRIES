@@ -13,7 +13,7 @@ export default function CreateActivity(){
     const allActivities = useSelector((state)=>state?.activities)
     const allCountriesAndActivities = useSelector((state)=>state?.countriesAndActivities)
     let keyCountries=0;
-    let keyActivities=0;
+    let keyActivities=260;
     allCountriesData.sort((countryA, countryB) => {
         const nameA = countryA.name.toUpperCase(); // ignore upper and lowercase
         const nameB = countryB.name.toUpperCase(); // ignore upper and lowercase
@@ -31,10 +31,10 @@ export default function CreateActivity(){
       })
     // const allActivities = useSelector((state)=>state?.activities)
     const [errors,setErrors]=useState({
-        name:`Se requiere name`,
-        difficulty:"Se requiere difficulty ",
-        duration:"Se requiere duration",
-        season:"Se requiere season",
+        name:`Name is required`,
+        difficulty:"Difficulty is required",
+        duration:"Duration is required",
+        season:"Season is required",
     }) //aca se crean los posibles errores
     const [input,setInput]=useState({
         name:"",
@@ -96,7 +96,13 @@ export default function CreateActivity(){
     function handleSubmit(event){
         event.preventDefault();
         try {
-            if(coincidencia.length===0){
+            if(coincidencia.length!==0){
+                alert(`The countries ${coincidencia.join(", ")} are already associated with this activity`)
+            }else if(input.difficulty<1 ||input.difficulty>5 ){
+                    alert(`The difficulty must be a number between 1 and 5`)
+            }else if(input.duration<1 ){
+                alert(`The duration must be a positive number`)
+            }else{
                 dispatch(postActivities(input))
                 alert("Activity created")
                 setInput({
@@ -109,8 +115,6 @@ export default function CreateActivity(){
                 dispatch(getAllCountries()) 
                 dispatch(getAllActivities())
                 history.push("/home") //asi es como se rediriges
-            }else{
-                alert(`The countries ${coincidencia.join(", ")} are already associated with this activity`)
             }
         } catch (error) {
             console.log("el error es:", error)
@@ -118,6 +122,7 @@ export default function CreateActivity(){
         }
         
     }
+
     let idsCountriesInput=allCountriesData.filter((country)=>input.countries.includes(country.name)).map((country)=>country.cca3)//trae los ids de los paises del input
     let paisesDentroDeActividades= allCountriesAndActivities.filter((linea)=>(linea.activityName===input.name)).map((country)=>country.countryCca3)
     let coincidencia=[]
@@ -125,9 +130,6 @@ export default function CreateActivity(){
         coincidencia=idsCountriesInput.filter((id)=>paisesDentroDeActividades.includes(id))
     }
     
-    // let nameActivities=allActivities.filter((activity)=>activity.name===input.name)
-
-
     return(
         <form className={style.mainContainer} onSubmit={(event)=>handleSubmit(event)}>
             <h3 className={style.title}>Create a new activity</h3>
@@ -137,24 +139,27 @@ export default function CreateActivity(){
                 {errors.name&&(
                 <b> <p className={style.errors}>{errors.name}</p></b>
                 )}
-                {/* {nameActivities.length!==0&&(
-                <b> <p className={style.errors}>La actividad ya existe</p></b>
-                )} */}
             </div>
 
             <div className={style.container}>
                 <label htmlFor="difficulty" className={style.titleInput}>Difficulty<span>*</span>: </label>
-                <input className={style.input} type='number' maxLength="3" name='difficulty' placeholder="1"id="difficulty" min="0" max="100" value={input.difficulty} onChange={(event)=>handleChange(event)} required/>
+                <input className={style.input} type='number' maxLength="3" name='difficulty' placeholder="1-5"id="difficulty" min="1" max="5" value={input.difficulty} onChange={(event)=>handleChange(event)} required/>
                 {errors.difficulty&&(
                 <b><p className={style.errors}>{errors.difficulty}</p></b>
+                )}
+                {(input.difficulty<0||input.difficulty>5) &&(
+                <b><p className={style.errors}>Must be a number between 1 and 5</p></b>
                 )}
             </div>
 
             <div className={style.container}>
                 <label htmlFor="duration" className={style.titleInput}>Duration(minutes)<span>*</span>: </label>
-                <input className={style.input} type='number' maxLength="3" name='duration' placeholder="1"id="duration" min="0" max="14400" value={input.duration} onChange={(event)=>handleChange(event)} required/>
+                <input className={style.input} type='number' maxLength="3" name='duration' placeholder="1"id="duration" min="1" value={input.duration} onChange={(event)=>handleChange(event)} required/>
                 {errors.duration&&(
                 <b><p className={style.errors}>{errors.duration}</p></b>
+                )}
+                {(input.duration!=="" &&input.duration<1) &&(
+                <b><p className={style.errors}>Must be a greater than 0</p></b>
                 )}
             </div>
 
@@ -162,7 +167,7 @@ export default function CreateActivity(){
             <div className={style.arrays}>
                 {allSeasons?.map((season)=>{
                     return (
-                    <div key={`key ${keyActivities++}`} className={style.contCountries}>
+                    <div key={`${keyActivities++}`} className={style.contCountries}>
                         <input type="checkbox" name="seasons" value={season} onChange={(event)=>handleCheck(event)} />
                         <label className={style.inputArray}>{season}</label>
                     </div>)
@@ -172,7 +177,7 @@ export default function CreateActivity(){
             <div className={style.title}> <h4 >Countries</h4> </div>
             <div className={style.arrays}>
                 {allCountries?.map((country)=>(
-                    <div key={`key ${keyCountries++}`} className={style.contCountries}>
+                    <div key={`${keyCountries++}`} className={style.contCountries}>
                         <input type="checkbox" name="countries" value={country} onChange={(event)=>handleCheck(event)} />
                         <label className={style.inputArray}>{country}</label>
                     </div>
@@ -183,7 +188,7 @@ export default function CreateActivity(){
             </div>
 
             <div>
-                {Object.keys(errors).length!==0 ||coincidencia.length!==0? 
+                {Object.keys(errors).length!==0 ||coincidencia.length!==0 ||(input.difficulty<0||input.difficulty>5) ||input.duration<1? 
                 <button className={style.buttonDissabled} type="submit" disabled >Create Activity</button>:
                 <button className={style.buttons} type="submit" >Create Activity</button>
                 }

@@ -1,11 +1,27 @@
 const { Router } = require("express");
-const { Country, Activity, Country_Activity } = require("../../db");
+const { Activity } = require("../../db");
 const router = Router();
 const {
   getInfoDB,
   postActivity,
   repeatedActivities,
 } = require("../controllers/activity");
+
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const objActivity = req.body;
+    const activityToUpdate = await Activity.findByPk(id);
+    await activityToUpdate.set(objActivity);
+    await activityToUpdate.save();
+    res.status(200).send(activityToUpdate);
+  } catch (error) {
+    console.log("El error middleware activity put / es:", error.message);
+    res
+      .status(401)
+      .send("El error middleware activity put / es:", error.message);
+  }
+});
 
 router.post("/", async (req, res) => {
   try {

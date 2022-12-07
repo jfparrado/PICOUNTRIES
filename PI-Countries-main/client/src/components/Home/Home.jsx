@@ -99,7 +99,7 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
                             <option value="All">Activity</option>
                             {arrActivities?.map((activity)=>{ //que muestre unicamente las countries dentro de esta pagina
                                 return (
-                                    <option key={`activity ${actividad++}`} value={activity}>{activity}</option>
+                                    <option key={`a${actividad++}`} value={activity}>{activity}</option>
                                     )})
                             }
                         </select>
@@ -107,7 +107,7 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
                             <option value="All">Continent</option>
                             {continents?.map((continent)=>{ //que muestre unicamente las countries dentro de esta pagina
                                 return (
-                                    <option key={`activity ${continent++}`} value={continent}>{continent}</option>
+                                    <option key={`c${continent++}`} value={continent}>{continent}</option>
                                     )})
                             }
                         </select>
@@ -116,7 +116,7 @@ export default function Home(){//props recibe la info que le llegue y se usa pro
                     <article className={style.tarjetas}>
                     {currentCountries?.map((country)=>{ //que muestre unicamente las countries dentro de esta pagina
                         return (
-                            <div key={`country home ${pais++}`} className={style.card}>
+                            <div key={`p${pais++}`} className={style.card}>
                                 <CountryCard
                                 key={country.id}
                                 id={country.cca3}
