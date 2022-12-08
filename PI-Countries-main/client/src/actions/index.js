@@ -171,7 +171,6 @@ export function postActivities(activity) {
   };
 }
 export function putActivities(activity) {
-  console.log("front put activities:", activity);
   const { name } = activity;
   return async function (dispatch) {
     try {

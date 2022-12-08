@@ -10,9 +10,7 @@ const {
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id:", id);
     const objActivity = req.body;
-    console.log("objActivity:", objActivity);
     const activityToUpdate = await Activity.findByPk(id);
     await activityToUpdate.set(objActivity);
     await activityToUpdate.save();
