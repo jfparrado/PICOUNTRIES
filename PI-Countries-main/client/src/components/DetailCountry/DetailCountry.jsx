@@ -7,6 +7,7 @@ import style from "./DetailCountry.module.css"
 
 export default function  DetailCountry(){
     const { id } = useParams();
+    let i=0;
     const dispatch =useDispatch()
     useEffect(()=>{//esta funcion es que quiero hacer cuando el componenete se monta o actualiza
         dispatch(getCountriesById(id)) 
@@ -42,15 +43,15 @@ export default function  DetailCountry(){
                         <div>
                         <p className={style.content}> <b>Population: </b>  {oneCountry[0].population}</p></div>
                         <div>
-                        <p className={style.content}><b>Touristic activities: </b> 
+                        <div className={style.content}><b>Touristic activities: </b> 
                             {
                                 oneCountry[0].activities.length!==0?
                                 oneCountry[0].activities.map((activity)=>{
                                     return(
-                                        <p> {activity.name} <button><Link className={style.text} to={`/edit_activity/${activity.name}`}>Edit</Link></button> </p>
+                                        <p key={i++}> {activity.name} <button><Link className={style.text} to={`/edit_activity/${activity.name}`}>Edit</Link></button> </p>
                                         )}):
                                 "No activities"
-                            }</p>
+                            }</div>
                         </div>
                     </div>
                 </div>
