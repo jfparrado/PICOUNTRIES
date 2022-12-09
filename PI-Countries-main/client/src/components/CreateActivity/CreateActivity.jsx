@@ -98,6 +98,8 @@ export default function CreateActivity(){
         try {
             if(coincidencia.length!==0){
                 alert(`The countries ${coincidencia.join(", ")} are already associated with this activity`)
+            }else if(Object.keys(errors).length!==0 ){
+                alert(`There are still fields that need to be completed on the formulary`)
             }else if(input.difficulty<1 ||input.difficulty>5 ){
                     alert(`The difficulty must be a number between 1 and 5`)
             }else if(input.duration<1 ){
